@@ -78,4 +78,9 @@ public class RemovingState : IBuildingState
         bool validity = CheckIfSelectionIsValid(gridPosition);
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), validity);
     }
+
+    public void OnAction(Vector3Int position, Quaternion rotation, GameObject prefab)
+    {
+        throw new NotImplementedException();
+    }
 }

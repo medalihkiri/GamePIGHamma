@@ -21,7 +21,7 @@ public class PlacementSystem : MonoBehaviour
     IBuildingState buildingState;
 
     [SerializeField] private SoundFeedback soundFeedback;
-    private Quaternion rotation;
+    private Quaternion rotation = Quaternion.Euler(0, 90, 0);
 
     private void Start()
     {
@@ -61,7 +61,9 @@ public class PlacementSystem : MonoBehaviour
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
+        rotation *= Quaternion.Euler(0, 90, 0);
         buildingState.Rotate();
+        Debug.Log(rotation);
         //PlacementState.RotateBuilding(gridPosition);
     }
 

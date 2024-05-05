@@ -104,6 +104,38 @@ public class PlacementState : IBuildingState
 
         previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
     }
+    public void OnAction(Vector3Int gridPosition, Quaternion rotation,GameObject prefab)
+    {
+
+        bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+        if (placementValidity == false)
+        {
+            soundFeedback.PlaySound(SoundType.wrongPlacement);
+            return;
+        }
+        soundFeedback.PlaySound(SoundType.Place);
+
+        //GameObject x = database.objectsData[selectedObjectIndex].Prefab;
+
+        Building MyBuilding = prefab.GetComponent<Building>();
+        MyBuilding.positionInGrid = gridPosition;
+        Debug.Log("===========================================");
+        Debug.Log("x"+ prefab.GetComponent<Building>().positionInGrid.ToString());
+        Debug.Log("position:"+ MyBuilding.positionInGrid.ToString());
+        Debug.Log("===========================================");
+        int index = objectPlacer.PlaceObject(prefab,grid.CellToWorld(gridPosition));
+
+
+        GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ?
+            floorData :
+            furnitureData;
+        selectedData.AddObjectAt(gridPosition,
+            database.objectsData[selectedObjectIndex].Size,
+            database.objectsData[selectedObjectIndex].ID,
+            index);
+
+        previewSystem.UpdatePosition(grid.CellToWorld(gridPosition), false);
+    }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
